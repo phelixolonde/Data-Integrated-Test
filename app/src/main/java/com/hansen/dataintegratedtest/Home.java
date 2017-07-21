@@ -3,6 +3,7 @@ package com.hansen.dataintegratedtest;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -48,6 +50,7 @@ public class Home extends AppCompatActivity {
         rv = (RelativeLayout) findViewById(R.id.rv);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        //Firebase analytics init
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
@@ -55,11 +58,14 @@ public class Home extends AppCompatActivity {
         btnGithub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //getting the current dtae
                 Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DATE, -7);
-                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                //getting the last two weeks date
+                cal.add(Calendar.DATE, -14);
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 
                 String formatted = format1.format(cal.getTime());
+                //using get method to get the response
                 getGitRepos("https://api.github.com/search/repositories?q=created>" + formatted + "&sort=stars&order=desc");
             }
         });
@@ -79,6 +85,7 @@ public class Home extends AppCompatActivity {
         pDialog.setMessage("Loading...");
         pDialog.show();
 
+        //getting the request object
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -86,28 +93,34 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         pDialog.hide();
+
+                        //removing all views from the relative layout
                         rv.removeAllViews();
                         repos=new ArrayList<>();
                         if (response != null) {
+                            //creating a listview instance
                             ListView repoList = new ListView(Home.this);
+                            //adding the listview to the relative layout
                             rv.addView(repoList);
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(Home.this, android.R.layout.simple_list_item_1,repos );
 
-                            JSONObject jsonObject;
+                            JSONObject jsonObject ;
+                            //decoding the response
                             try {
                                 jsonObject = new JSONObject(response.toString());
 
-                                JSONArray tsmresponse = (JSONArray) jsonObject.get("name");
+                                JSONArray jsonArray = (JSONArray) jsonObject.get("items");
 
-                                for(int i=0; i<tsmresponse.length(); i++){
-                                    repos.add(tsmresponse.getJSONObject(i).getString("name"));
+                                for(int i=0; i<jsonArray .length(); i++){
+                                    //adding the names of the repos to the arraylist
+                                    repos.add(jsonArray .getJSONObject(i).getString("name"));
                                 }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-
+//setting the adapter of the list
                             repoList.setAdapter(adapter);
                         }
                     }
@@ -128,14 +141,19 @@ public class Home extends AppCompatActivity {
 
     private void validateAndSum(String text) {
         if (text != null && !text.equals("")) {
+            //splitting the numbers by comma and adding to a list
             List<String> numList = Arrays.asList(text.split(","));
+
+            //arraylist to hold the sum of the individual numbers
             ArrayList<Integer> sumList = new ArrayList<>();
             for (int i = 0; i < numList.size(); i++) {
 
                 String number = String.valueOf(numList.get(i));
                 for (int k = 0; k < number.length(); k++) {
+                    //getting each digit for all the numbers
                     int j = Character.digit(number.charAt(k), 10);
 
+                    //adding the digits to my array list
                     sumList.add(j);
 
                 }
@@ -143,6 +161,7 @@ public class Home extends AppCompatActivity {
             }
             int s = 0;
             for (int x = 0; x < sumList.size(); x++) {
+                //adding the digits
                 s = s + sumList.get(x);
                 txtResult.setText(getString(R.string.result) + s);
 

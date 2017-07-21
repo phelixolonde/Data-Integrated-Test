@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.hansen.v1.Home">
+    tools:context="com.hansen.dataintegratedtest.Home">
 
     <EditText
         android:id="@+id/edInput"
@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edInput"
-        android:layout_centerInParent="true"
-        android:background="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_go"
         android:text="@string/go"
         android:textColor="@color/white" />
 
@@ -30,8 +30,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnGo"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:textSize="20sp" />
 
-
+    <Button
+        android:id="@+id/btnGithub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtResult"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_github"
+        android:text="@string/github"
+        android:textColor="@color/white" />
 </RelativeLayout>

@@ -32,4 +32,6 @@
         android:layout_below="@+id/btnGo"
         android:layout_centerInParent="true"
         android:textSize="20sp" />
+
+
 </RelativeLayout>

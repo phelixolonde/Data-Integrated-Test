@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Data Integrated</string>
+    <string name="enter_numbers_separated_by_commas">Enter numbers separated by commas</string>
+    <string name="go">GO</string>
+    <string name="result">RESULT=</string>
+    <string name="github">GITHUB</string>
+</resources>
